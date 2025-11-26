@@ -36,7 +36,9 @@ package.json               # Scripts & dependencies
 
 # Setup & Development
 npm install
+
 npm run dev
+
 npm run build
 
 # Embedding the Widget Into Any Website
