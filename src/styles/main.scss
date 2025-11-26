@@ -1,0 +1,52 @@
+.weather-widget {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(145deg, #ffffff, #f5f7fb);
+  border-radius: 1em;
+  padding: 1.2em 2em;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  width: 280px;
+  color: #111827;
+  font-size: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.1em;
+    font-weight: 600;
+    font-size: 0.9em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6b7280;
+  }
+
+  &__settings-btn {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 1.4em;
+      height: 1.4em;
+    }
+
+    &:hover {
+      opacity: 0.8;
+      transform: translateY(-0.5px);
+    }
+
+    &:active {
+      transform: translateY(0.2px) scale(0.97);
+    }
+  }
+
+  &__city-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+  }
+}
