@@ -27,6 +27,19 @@
         </div>
       </div>
     </div>
+
+    <div class="city-card__extra" v-if="!hasError">
+      <div class="city-card__extra-row">
+        <span>Wind: {{ windLabel }}</span>
+        <span>Pressure: {{ pressure !== null ? pressure + ' hPa' : '—' }}</span>
+      </div>
+      <div class="city-card__extra-row">
+        <span>Humidity: {{ humidity !== null ? humidity + '%' : '—' }}</span>
+        <span v-if="visibilityKm !== null">
+            Visibility: {{ visibilityKm }} km
+          </span>
+      </div>
+    </div>
   </article>
 </template>
 
@@ -46,6 +59,28 @@ const feels = ref<number | null>(null);
 const desc = ref('');
 const iconCode = ref<string | null>(null);
 const hasError = ref(false);
+const pressure = ref<number | null>(null);
+const humidity = ref<number | null>(null);
+const visibility = ref<number | null>(null);
+const windSpeed = ref<number | null>(null);
+const windDeg = ref<number | null>(null);
+
+const visibilityKm = computed(() =>
+  visibility.value != null ? (visibility.value / 1000).toFixed(1) : null
+);
+
+function degToDirection(deg: number | null): string {
+  if (deg == null) return '';
+  const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  const index = Math.round(((deg % 360) / 45)) % 8;
+  return dirs[index];
+}
+
+const windLabel = computed(() => {
+  if (windSpeed.value == null) return '—';
+  const dir = degToDirection(windDeg.value);
+  return `${windSpeed.value.toFixed(1)} m/s${dir ? ' ' + dir : ''}`;
+});
 
 const iconUrl = computed(() =>
   iconCode.value
@@ -67,6 +102,11 @@ onMounted(async () => {
     feels.value = Math.round(data.main.feels_like);
     desc.value = data.weather?.[0]?.description || '';
     iconCode.value = data.weather?.[0]?.icon || null;
+    pressure.value = data.main?.pressure ?? null;
+    humidity.value = data.main?.humidity ?? null;
+    visibility.value = typeof data.visibility === 'number' ? data.visibility : null;
+    windSpeed.value = data.wind?.speed ?? null;
+    windDeg.value = data.wind?.deg ?? null;
   } catch (e) {
     console.error('Failed to load weather', e);
     hasError.value = true;
@@ -132,6 +172,18 @@ onMounted(async () => {
     font-size: 11px;
     color: #6b7280;
     margin-top: 3px;
+  }
+
+  &__extra {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #6b7280;
+  }
+
+  &__extra-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
   }
 }
 </style>
