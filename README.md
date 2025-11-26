@@ -35,7 +35,7 @@ tsconfig.json              # TypeScript configuration
 package.json               # Scripts & dependencies
 
 # Setup & Development
-npm install
+## npm install
 
 npm run dev
 
